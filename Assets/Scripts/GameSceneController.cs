@@ -1,37 +1,37 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI; 
-using System.IO; // Для проверки файлов
+using System.IO; // Р”Р»СЏ РїСЂРѕРІРµСЂРєРё С„Р°Р№Р»РѕРІ
 
 public class GameSceneController : MonoBehaviour
 {
     [SerializeField] private TMP_Text uidText;
     [SerializeField] private CardController cardController;
-    [SerializeField] private Button targetButton; // Кнопка, которую будем отключать
+    [SerializeField] private Button targetButton; // РљРЅРѕРїРєР°, РєРѕС‚РѕСЂСѓСЋ Р±СѓРґРµРј РѕС‚РєР»СЋС‡Р°С‚СЊ
 
     void Start()
     {
-        string userCode = PlayerPrefs.GetString("CurrentUserCode", "неизвестен");
+        string userCode = PlayerPrefs.GetString("CurrentUserCode", "РЅРµРёР·РІРµСЃС‚РµРЅ");
 
-        // Отображаем UID
+        // РћС‚РѕР±СЂР°Р¶Р°РµРј UID
         if (uidText != null)
         {
             uidText.text = $"UID: {userCode}";
         }
 
-        // Проверяем условия и блокируем кнопку
+        // РџСЂРѕРІРµСЂСЏРµРј СѓСЃР»РѕРІРёСЏ Рё Р±Р»РѕРєРёСЂСѓРµРј РєРЅРѕРїРєСѓ
         if (targetButton != null)
         {
             bool shouldDisableButton =
                 string.IsNullOrEmpty(userCode) ||
-                userCode == "неизвестен" ||
+                userCode == "РЅРµРёР·РІРµСЃС‚РµРЅ" ||
                 !UserJsonFileExists(userCode);
 
             targetButton.interactable = !shouldDisableButton;
         }
     }
 
-    // Проверяем существование файла пользователя
+    // РџСЂРѕРІРµСЂСЏРµРј СЃСѓС‰РµСЃС‚РІРѕРІР°РЅРёРµ С„Р°Р№Р»Р° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
     private bool UserJsonFileExists(string userCode)
     {
         string filePath = Path.Combine(Application.persistentDataPath, $"user_{userCode}.json");
