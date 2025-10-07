@@ -18,7 +18,7 @@ public class JsonDataManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            InitializeDirectory(); // Добавляем инициализацию директории
+            InitializeDirectory(); // Р”РѕР±Р°РІР»СЏРµРј РёРЅРёС†РёР°Р»РёР·Р°С†РёСЋ РґРёСЂРµРєС‚РѕСЂРёРё
         }
         else
         {
@@ -63,7 +63,7 @@ public class JsonDataManager : MonoBehaviour
 
     public void SaveUserData(UserData userData)
     {
-        userData.PrepareToSave(); // Подготавливаем данные к сохранению
+        userData.PrepareToSave(); // РџРѕРґРіРѕС‚Р°РІР»РёРІР°РµРј РґР°РЅРЅС‹Рµ Рє СЃРѕС…СЂР°РЅРµРЅРёСЋ
 
         string json = JsonUtility.ToJson(userData, true);
         string filePath = Path.Combine(Application.persistentDataPath, $"user_{userData.userCode}.json");
@@ -78,11 +78,11 @@ public class JsonDataManager : MonoBehaviour
         {
             string json = File.ReadAllText(filePath);
             UserData userData = JsonUtility.FromJson<UserData>(json);
-            userData.AfterLoad(); // Восстанавливаем словари после загрузки
+            userData.AfterLoad(); // Р’РѕСЃСЃС‚Р°РЅР°РІР»РёРІР°РµРј СЃР»РѕРІР°СЂРё РїРѕСЃР»Рµ Р·Р°РіСЂСѓР·РєРё
             return userData;
         }
 
-        // Если файла нет, создаем нового пользователя
+        // Р•СЃР»Рё С„Р°Р№Р»Р° РЅРµС‚, СЃРѕР·РґР°РµРј РЅРѕРІРѕРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
         return new UserData() { userCode = userCode };
     }
 
