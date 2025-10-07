@@ -18,11 +18,11 @@ public class Login : MonoBehaviour
 
     void Awake()
     {
-        // Проверяем ссылки в инспекторе
+        // РџСЂРѕРІРµСЂСЏРµРј СЃСЃС‹Р»РєРё РІ РёРЅСЃРїРµРєС‚РѕСЂРµ
         if (usernameInput == null || passwordInput == null ||
             loginButton == null || statusText == null)
         {
-            Debug.LogError("Не все UI элементы присвоены в инспекторе!");
+            Debug.LogError("РќРµ РІСЃРµ UI СЌР»РµРјРµРЅС‚С‹ РїСЂРёСЃРІРѕРµРЅС‹ РІ РёРЅСЃРїРµРєС‚РѕСЂРµ!");
             enabled = false;
             return;
         }
@@ -34,8 +34,8 @@ public class Login : MonoBehaviour
 
         if (_dataManager == null)
         {
-            Debug.LogError("JsonDataManager не найден на сцене!");
-            statusText.text = "Ошибка системы! Перезапустите приложение.";
+            Debug.LogError("JsonDataManager РЅРµ РЅР°Р№РґРµРЅ РЅР° СЃС†РµРЅРµ!");
+            statusText.text = "РћС€РёР±РєР° СЃРёСЃС‚РµРјС‹! РџРµСЂРµР·Р°РїСѓСЃС‚РёС‚Рµ РїСЂРёР»РѕР¶РµРЅРёРµ.";
             statusText.color = Color.red;
             loginButton.interactable = false;
             return;
@@ -51,7 +51,7 @@ public class Login : MonoBehaviour
             _dataManager = FindObjectOfType<JsonDataManager>();
             if (_dataManager == null)
             {
-                statusText.text = "Системная ошибка!";
+                statusText.text = "РЎРёСЃС‚РµРјРЅР°СЏ РѕС€РёР±РєР°!";
                 return;
             }
         }
@@ -59,20 +59,20 @@ public class Login : MonoBehaviour
         statusText.text = "";
         statusText.color = Color.red;
 
-        // Проверяем ввод
+        // РџСЂРѕРІРµСЂСЏРµРј РІРІРѕРґ
         if (string.IsNullOrEmpty(usernameInput.text))
         {
-            statusText.text = "Введите логин!";
+            statusText.text = "Р’РІРµРґРёС‚Рµ Р»РѕРіРёРЅ!";
             return;
         }
 
         if (string.IsNullOrEmpty(passwordInput.text))
         {
-            statusText.text = "Введите пароль!";
+            statusText.text = "Р’РІРµРґРёС‚Рµ РїР°СЂРѕР»СЊ!";
             return;
         }
 
-        // Пробуем войти
+        // РџСЂРѕР±СѓРµРј РІРѕР№С‚Рё
         try
         {
             var allUserCodes = _dataManager.GetAllUserCodes();
@@ -81,7 +81,7 @@ public class Login : MonoBehaviour
                 var userData = _dataManager.LoadUserData(code);
                 if (userData != null && userData.username == usernameInput.text.Trim())
                 {
-                    // Проверяем пароль через PBKDF2
+                    // РџСЂРѕРІРµСЂСЏРµРј РїР°СЂРѕР»СЊ С‡РµСЂРµР· PBKDF2
                     byte[] salt = Convert.FromBase64String(userData.salt);
                     string inputHash = Convert.ToBase64String(
                         new System.Security.Cryptography.Rfc2898DeriveBytes(
@@ -99,12 +99,12 @@ public class Login : MonoBehaviour
                     }
                 }
             }
-            statusText.text = "Неверный логин или пароль!";
+            statusText.text = "РќРµРІРµСЂРЅС‹Р№ Р»РѕРіРёРЅ РёР»Рё РїР°СЂРѕР»СЊ!";
         }
         catch (System.Exception e)
         {
             Debug.LogError(e);
-            statusText.text = "Ошибка системы!";
+            statusText.text = "РћС€РёР±РєР° СЃРёСЃС‚РµРјС‹!";
         }
     }
 
