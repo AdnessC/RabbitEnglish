@@ -9,10 +9,10 @@ public class UserData
     public string userCode;
     public List<string> viewedImages = new List<string>();
 
-    // Добавляем новые поля для прогресса изучения
+    // Р”РѕР±Р°РІР»СЏРµРј РЅРѕРІС‹Рµ РїРѕР»СЏ РґР»СЏ РїСЂРѕРіСЂРµСЃСЃР° РёР·СѓС‡РµРЅРёСЏ
     public Dictionary<string, int> learningProgress = new Dictionary<string, int>();
 
-    // Для сериализации Dictionary
+    // Р”Р»СЏ СЃРµСЂРёР°Р»РёР·Р°С†РёРё Dictionary
     public List<string> progressCategories = new List<string>();
     public List<int> progressIndices = new List<int>();
 
@@ -37,4 +37,5 @@ public class UserData
             learningProgress[progressCategories[i]] = progressIndices[i];
         }
     }
+}
 }
