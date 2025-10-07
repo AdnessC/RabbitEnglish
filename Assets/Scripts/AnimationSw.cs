@@ -8,32 +8,32 @@ using TMPro;
 
 public class AnimationSwitcherNew : MonoBehaviour
 {
-    public Animator animator; // Ссылка на компонент Animator
+    public Animator animator; // РЎСЃС‹Р»РєР° РЅР° РєРѕРјРїРѕРЅРµРЅС‚ Animator
     public TMP_Text errorText;
-    public string breathAnimation = "Дыхание"; // Имя анимации дыхания
-    public string yawnAnimationCheck = "Check"; // Имя триггера для смены анимации на зевание
-    public string QashAnimationTrigger = "Question"; // Имя триггера для анимации вопроса
+    public string breathAnimation = "Р”С‹С…Р°РЅРёРµ"; // РРјСЏ Р°РЅРёРјР°С†РёРё РґС‹С…Р°РЅРёСЏ
+    public string yawnAnimationCheck = "Check"; // РРјСЏ С‚СЂРёРіРіРµСЂР° РґР»СЏ СЃРјРµРЅС‹ Р°РЅРёРјР°С†РёРё РЅР° Р·РµРІР°РЅРёРµ
+    public string QashAnimationTrigger = "Question"; // РРјСЏ С‚СЂРёРіРіРµСЂР° РґР»СЏ Р°РЅРёРјР°С†РёРё РІРѕРїСЂРѕСЃР°
 
     [SerializeField] private AudioSource _audioSource;
-    public Button[] controlButtons; // Кнопки, которые нужно отключать
+    public Button[] controlButtons; // РљРЅРѕРїРєРё, РєРѕС‚РѕСЂС‹Рµ РЅСѓР¶РЅРѕ РѕС‚РєР»СЋС‡Р°С‚СЊ
     private Dictionary<string, List<Texture2D>> _allCards;
     private JsonDataManager _dataManager;
     private string _currentUserId;
     private Button yourButton;
-    private bool _isYawning = false; // Флаг для отслеживания анимации зевания
+    private bool _isYawning = false; // Р¤Р»Р°Рі РґР»СЏ РѕС‚СЃР»РµР¶РёРІР°РЅРёСЏ Р°РЅРёРјР°С†РёРё Р·РµРІР°РЅРёСЏ
     private Coroutine _breathCoroutine;
     private bool _isPlayingQuestAnimation = false;
 
     void Start()
     {
-        // Проверяем, что это сцена с индексом 1
+        // РџСЂРѕРІРµСЂСЏРµРј, С‡С‚Рѕ СЌС‚Рѕ СЃС†РµРЅР° СЃ РёРЅРґРµРєСЃРѕРј 1
         if (SceneManager.GetActiveScene().buildIndex == 1)
         {
             StartCoroutine(PlayBreathAnimation());
         }
         else
         {
-            // Опционально: отключаем аниматор на других сценах
+            // РћРїС†РёРѕРЅР°Р»СЊРЅРѕ: РѕС‚РєР»СЋС‡Р°РµРј Р°РЅРёРјР°С‚РѕСЂ РЅР° РґСЂСѓРіРёС… СЃС†РµРЅР°С…
             if (animator != null)
             {
                 animator.enabled = false;
@@ -44,19 +44,19 @@ public class AnimationSwitcherNew : MonoBehaviour
 
     private IEnumerator PlayBreathAnimation()
     {
-        // Заранее загружаем аудио (делаем это один раз)
-         AudioClip yawnSound = Resources.Load<AudioClip>("Audio/Зевание");
+        // Р—Р°СЂР°РЅРµРµ Р·Р°РіСЂСѓР¶Р°РµРј Р°СѓРґРёРѕ (РґРµР»Р°РµРј СЌС‚Рѕ РѕРґРёРЅ СЂР°Р·)
+         AudioClip yawnSound = Resources.Load<AudioClip>("Audio/Р—РµРІР°РЅРёРµ");
 
         while (true)
         {
-            // Если идет другая анимация - ждем
+            // Р•СЃР»Рё РёРґРµС‚ РґСЂСѓРіР°СЏ Р°РЅРёРјР°С†РёСЏ - Р¶РґРµРј
             if (_isYawning || _isPlayingQuestAnimation)
             {
                 yield return null;
                 continue;
             }
 
-            // Проигрываем цикл дыхания
+            // РџСЂРѕРёРіСЂС‹РІР°РµРј С†РёРєР» РґС‹С…Р°РЅРёСЏ
             for (int i = 0; i < 20; i++)
             {
                 if (_isPlayingQuestAnimation) break;
@@ -65,19 +65,19 @@ public class AnimationSwitcherNew : MonoBehaviour
                 yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
             }
 
-            // Проигрываем зевание, если не было прерывания
+            // РџСЂРѕРёРіСЂС‹РІР°РµРј Р·РµРІР°РЅРёРµ, РµСЃР»Рё РЅРµ Р±С‹Р»Рѕ РїСЂРµСЂС‹РІР°РЅРёСЏ
             if (!_isPlayingQuestAnimation && !_isYawning)
             {
                 _isYawning = true;
                 animator.SetTrigger(yawnAnimationCheck);
 
-                // Воспроизводим звук (если он загрузился)
+                // Р’РѕСЃРїСЂРѕРёР·РІРѕРґРёРј Р·РІСѓРє (РµСЃР»Рё РѕРЅ Р·Р°РіСЂСѓР·РёР»СЃСЏ)
                 if (_audioSource != null && yawnSound != null)
                 {
                     _audioSource.PlayOneShot(yawnSound); 
                 }
 
-                yield return new WaitForSeconds(6.75f); // Полная длительность зевания
+                yield return new WaitForSeconds(6.75f); // РџРѕР»РЅР°СЏ РґР»РёС‚РµР»СЊРЅРѕСЃС‚СЊ Р·РµРІР°РЅРёСЏ
                 _isYawning = false;
             }
         }
@@ -98,7 +98,7 @@ public class AnimationSwitcherNew : MonoBehaviour
             StopCoroutine(_breathCoroutine);
     }
 
-    // Метод для запуска новой анимации
+    // РњРµС‚РѕРґ РґР»СЏ Р·Р°РїСѓСЃРєР° РЅРѕРІРѕР№ Р°РЅРёРјР°С†РёРё
     public void OnAnimationQuest()
     {
         if (_isPlayingQuestAnimation) return;
@@ -112,22 +112,22 @@ public class AnimationSwitcherNew : MonoBehaviour
 
     private IEnumerator PlayAnimationWithPause()
     {
-        // Ждём 1.16 секунды анимации
+        // Р–РґС‘Рј 1.16 СЃРµРєСѓРЅРґС‹ Р°РЅРёРјР°С†РёРё
         yield return new WaitForSeconds(1.3f);
 
-        // Ставим анимацию на паузу (speed = 0)
+        // РЎС‚Р°РІРёРј Р°РЅРёРјР°С†РёСЋ РЅР° РїР°СѓР·Сѓ (speed = 0)
         animator.speed = 0f;
 
-        // Ждём 2 секунды паузы
+        // Р–РґС‘Рј 2 СЃРµРєСѓРЅРґС‹ РїР°СѓР·С‹
         yield return new WaitForSeconds(1.5f);
 
-        // Возобновляем анимацию (speed = 1)
+        // Р’РѕР·РѕР±РЅРѕРІР»СЏРµРј Р°РЅРёРјР°С†РёСЋ (speed = 1)
         animator.speed = 1f;
 
-        // Ждём оставшееся время (2.5 - 1.16 = 1.34 секунды)
+        // Р–РґС‘Рј РѕСЃС‚Р°РІС€РµРµСЃСЏ РІСЂРµРјСЏ (2.5 - 1.16 = 1.34 СЃРµРєСѓРЅРґС‹)
         yield return new WaitForSeconds(1.34f);
 
-        // Включаем кнопки и сбрасываем флаг
+        // Р’РєР»СЋС‡Р°РµРј РєРЅРѕРїРєРё Рё СЃР±СЂР°СЃС‹РІР°РµРј С„Р»Р°Рі
         _isPlayingQuestAnimation = false;
         UpdateButtonsInteractable();
     }
@@ -149,10 +149,10 @@ public class AnimationSwitcherNew : MonoBehaviour
 
     private IEnumerator SmoothAnimationWithPause()
     {
-        // Ждём, пока анимация реально начнётся
+        // Р–РґС‘Рј, РїРѕРєР° Р°РЅРёРјР°С†РёСЏ СЂРµР°Р»СЊРЅРѕ РЅР°С‡РЅС‘С‚СЃСЏ
         yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0);
 
-        // Точно ждём 1.3 секунды анимации
+        // РўРѕС‡РЅРѕ Р¶РґС‘Рј 1.3 СЃРµРєСѓРЅРґС‹ Р°РЅРёРјР°С†РёРё
         float animLength = animator.GetCurrentAnimatorStateInfo(0).length;
         float elapsed = 0f;
 
@@ -162,16 +162,16 @@ public class AnimationSwitcherNew : MonoBehaviour
             yield return null;
         }
 
-        // Пауза 1.5 секунды (speed = 0)
+        // РџР°СѓР·Р° 1.5 СЃРµРєСѓРЅРґС‹ (speed = 0)
         animator.speed = 0f;
         yield return new WaitForSeconds(1.5f);
         animator.speed = 1f;
 
-        // Ждём **оставшуюся** часть анимации (без лишних секунд!)
-        float remainingTime = animLength - 1.3f; // Общая длина минус уже проигранное время
+        // Р–РґС‘Рј **РѕСЃС‚Р°РІС€СѓСЋСЃСЏ** С‡Р°СЃС‚СЊ Р°РЅРёРјР°С†РёРё (Р±РµР· Р»РёС€РЅРёС… СЃРµРєСѓРЅРґ!)
+        float remainingTime = animLength - 1.3f; // РћР±С‰Р°СЏ РґР»РёРЅР° РјРёРЅСѓСЃ СѓР¶Рµ РїСЂРѕРёРіСЂР°РЅРЅРѕРµ РІСЂРµРјСЏ
         yield return new WaitForSeconds(remainingTime);
 
-        // Сброс состояния
+        // РЎР±СЂРѕСЃ СЃРѕСЃС‚РѕСЏРЅРёСЏ
         _isPlayingQuestAnimation = false;
         UpdateButtonsInteractable();
     }
@@ -218,4 +218,3 @@ public class AnimationSwitcherNew : MonoBehaviour
     public void PlayObjAnimation() => OnAnimationQuestR("Objects");
 
 }
-
