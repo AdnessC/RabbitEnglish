@@ -7,24 +7,24 @@ public class SceneLoad : MonoBehaviour
 
     void Start()
     {
-        // Получаем текущий индекс сцены
+        // РџРѕР»СѓС‡Р°РµРј С‚РµРєСѓС‰РёР№ РёРЅРґРµРєСЃ СЃС†РµРЅС‹
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        // Получаем общее количество сцен в сборке
+        // РџРѕР»СѓС‡Р°РµРј РѕР±С‰РµРµ РєРѕР»РёС‡РµСЃС‚РІРѕ СЃС†РµРЅ РІ СЃР±РѕСЂРєРµ
         int totalScenes = SceneManager.sceneCountInBuildSettings;
 
-        // Проверяем загрузку сцены с индексом 1
+        // РџСЂРѕРІРµСЂСЏРµРј Р·Р°РіСЂСѓР·РєСѓ СЃС†РµРЅС‹ СЃ РёРЅРґРµРєСЃРѕРј 1
         if (currentSceneIndex == 1)
         {
             if (InterFace != null)
             {
-                InterFace.SetActive(true); // Показываем объект, если сцена загружена
+                InterFace.SetActive(true); // РџРѕРєР°Р·С‹РІР°РµРј РѕР±СЉРµРєС‚, РµСЃР»Рё СЃС†РµРЅР° Р·Р°РіСЂСѓР¶РµРЅР°
             }
         }
         else
         {
             if (InterFace != null)
             {
-                InterFace.SetActive(false); // Скрываем объект, если сцена не загружена
+                InterFace.SetActive(false); // РЎРєСЂС‹РІР°РµРј РѕР±СЉРµРєС‚, РµСЃР»Рё СЃС†РµРЅР° РЅРµ Р·Р°РіСЂСѓР¶РµРЅР°
             }
         }
     }
