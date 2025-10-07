@@ -7,15 +7,15 @@ using UnityEngine.UI;
 
 public class TekstMP : MonoBehaviour
 {
-    [Header("Настройки")]
-    [SerializeField] private TMP_Text _outputText; // Куда выводить текст
-    [SerializeField] private List<Button> _buttons = new List<Button>(); // Сюда перетаскиваешь нужные кнопки
-    [SerializeField] private bool _startHidden = true; // Начинать со скрытым текстом
+    [Header("РќР°СЃС‚СЂРѕР№РєРё")]
+    [SerializeField] private TMP_Text _outputText; // РљСѓРґР° РІС‹РІРѕРґРёС‚СЊ С‚РµРєСЃС‚
+    [SerializeField] private List<Button> _buttons = new List<Button>(); // РЎСЋРґР° РїРµСЂРµС‚Р°СЃРєРёРІР°РµС€СЊ РЅСѓР¶РЅС‹Рµ РєРЅРѕРїРєРё
+    [SerializeField] private bool _startHidden = true; // РќР°С‡РёРЅР°С‚СЊ СЃРѕ СЃРєСЂС‹С‚С‹Рј С‚РµРєСЃС‚РѕРј
 
-    [Header("Анимация")]
-    [SerializeField] private float _animDuration = 2f; // Общая длительность анимации
-    [SerializeField] private float _popScale = 10f; // Во сколько раз увеличивается текст
-    [SerializeField] private Vector2 _centerPosition = new Vector2(0, 0); // Центр экрана
+    [Header("РђРЅРёРјР°С†РёСЏ")]
+    [SerializeField] private float _animDuration = 2f; // РћР±С‰Р°СЏ РґР»РёС‚РµР»СЊРЅРѕСЃС‚СЊ Р°РЅРёРјР°С†РёРё
+    [SerializeField] private float _popScale = 10f; // Р’Рѕ СЃРєРѕР»СЊРєРѕ СЂР°Р· СѓРІРµР»РёС‡РёРІР°РµС‚СЃСЏ С‚РµРєСЃС‚
+    [SerializeField] private Vector2 _centerPosition = new Vector2(0, 0); // Р¦РµРЅС‚СЂ СЌРєСЂР°РЅР°
 
     private Vector3 _originalPosition;
     private Vector3 _originalScale;
@@ -26,7 +26,7 @@ public class TekstMP : MonoBehaviour
         _originalPosition = _outputText.rectTransform.localPosition;
         _originalScale = _outputText.rectTransform.localScale;
 
-        // Начальное состояние
+        // РќР°С‡Р°Р»СЊРЅРѕРµ СЃРѕСЃС‚РѕСЏРЅРёРµ
         if (_startHidden)
         {
             _outputText.gameObject.SetActive(false);
@@ -46,7 +46,7 @@ public class TekstMP : MonoBehaviour
         TMP_Text buttonText = clickedButton.GetComponentInChildren<TMP_Text>();
         if (_outputText == null || buttonText == null) return;
 
-        // Активируем объект, если он был скрыт
+        // РђРєС‚РёРІРёСЂСѓРµРј РѕР±СЉРµРєС‚, РµСЃР»Рё РѕРЅ Р±С‹Р» СЃРєСЂС‹С‚
         if (!_outputText.gameObject.activeSelf)
         {
             _outputText.gameObject.SetActive(true);
@@ -64,12 +64,12 @@ public class TekstMP : MonoBehaviour
 
     private IEnumerator AnimateText()
     {
-        // 1. Устанавливаем начальные параметры
+        // 1. РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј РЅР°С‡Р°Р»СЊРЅС‹Рµ РїР°СЂР°РјРµС‚СЂС‹
         _outputText.rectTransform.localPosition = _centerPosition;
         _outputText.rectTransform.localScale = Vector3.zero;
         _outputText.alpha = 1f;
 
-        // 2. Анимация увеличения (появление)
+        // 2. РђРЅРёРјР°С†РёСЏ СѓРІРµР»РёС‡РµРЅРёСЏ (РїРѕСЏРІР»РµРЅРёРµ)
         float timer = 0f;
         while (timer < _animDuration / 2)
         {
@@ -85,7 +85,7 @@ public class TekstMP : MonoBehaviour
             yield return null;
         }
 
-        // 3. Анимация возврата
+        // 3. РђРЅРёРјР°С†РёСЏ РІРѕР·РІСЂР°С‚Р°
         timer = 0f;
         Vector3 startScale = _outputText.rectTransform.localScale;
         Vector3 startPos = _outputText.rectTransform.localPosition;
@@ -110,7 +110,7 @@ public class TekstMP : MonoBehaviour
             yield return null;
         }
 
-        // 4. Фиксируем конечные значения
+        // 4. Р¤РёРєСЃРёСЂСѓРµРј РєРѕРЅРµС‡РЅС‹Рµ Р·РЅР°С‡РµРЅРёСЏ
         _outputText.rectTransform.localScale = _originalScale;
         _outputText.rectTransform.localPosition = _originalPosition;
     }
