@@ -6,7 +6,7 @@ public class CardMemoryManager : MonoBehaviour
     private static CardMemoryManager _instance;
     public static CardMemoryManager Instance => _instance;
 
-    // Словарь для хранения просмотренных карточек по категориям
+    // РЎР»РѕРІР°СЂСЊ РґР»СЏ С…СЂР°РЅРµРЅРёСЏ РїСЂРѕСЃРјРѕС‚СЂРµРЅРЅС‹С… РєР°СЂС‚РѕС‡РµРє РїРѕ РєР°С‚РµРіРѕСЂРёСЏРј
     private Dictionary<string, HashSet<string>> _viewedCards = new Dictionary<string, HashSet<string>>();
 
     void Awake()
@@ -20,7 +20,7 @@ public class CardMemoryManager : MonoBehaviour
         _instance = this;
         DontDestroyOnLoad(gameObject);
         
-        // Инициализация категорий
+        // РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РєР°С‚РµРіРѕСЂРёР№
         InitCategory("Animals");
         InitCategory("Verbs");
         InitCategory("Adjectives");
@@ -37,17 +37,17 @@ public class CardMemoryManager : MonoBehaviour
         }
     }
 
-    // Добавляем карточку в просмотренные
+    // Р”РѕР±Р°РІР»СЏРµРј РєР°СЂС‚РѕС‡РєСѓ РІ РїСЂРѕСЃРјРѕС‚СЂРµРЅРЅС‹Рµ
     public void AddViewedCard(string category, string cardName)
     {
         if (_viewedCards.TryGetValue(category, out var categorySet))
         {
             categorySet.Add(cardName);
-            Debug.Log($"Добавлена карточка '{cardName}' в категорию '{category}'");
+            Debug.Log($"Р”РѕР±Р°РІР»РµРЅР° РєР°СЂС‚РѕС‡РєР° '{cardName}' РІ РєР°С‚РµРіРѕСЂРёСЋ '{category}'");
         }
     }
 
-    // Получаем все просмотренные карточки категории
+    // РџРѕР»СѓС‡Р°РµРј РІСЃРµ РїСЂРѕСЃРјРѕС‚СЂРµРЅРЅС‹Рµ РєР°СЂС‚РѕС‡РєРё РєР°С‚РµРіРѕСЂРёРё
     public HashSet<string> GetViewedCards(string category)
     {
         if (_viewedCards.TryGetValue(category, out var categorySet))
@@ -57,7 +57,7 @@ public class CardMemoryManager : MonoBehaviour
         return new HashSet<string>();
     }
 
-    // Очищаем историю по категории
+    // РћС‡РёС‰Р°РµРј РёСЃС‚РѕСЂРёСЋ РїРѕ РєР°С‚РµРіРѕСЂРёРё
     public void ClearCategory(string category)
     {
         if (_viewedCards.ContainsKey(category))
@@ -65,4 +65,3 @@ public class CardMemoryManager : MonoBehaviour
             _viewedCards[category].Clear();
         }
     }
-}
