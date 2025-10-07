@@ -7,19 +7,19 @@ using UnityEngine.UI;
 
 public class ColorChanger : MonoBehaviour
 {
-    [Header("3D Объект")]
-    [SerializeField] private Renderer targetRenderer; // Рендерер объекта, который меняем
+    [Header("3D РћР±СЉРµРєС‚")]
+    [SerializeField] private Renderer targetRenderer; // Р РµРЅРґРµСЂРµСЂ РѕР±СЉРµРєС‚Р°, РєРѕС‚РѕСЂС‹Р№ РјРµРЅСЏРµРј
 
-    [Header("Цвета")]
+    [Header("Р¦РІРµС‚Р°")]
     [SerializeField] private Color defaultColor = new Color(0.906f, 0.996f, 0.6f); // E7FE99
     [SerializeField] private Color alternateColor = new Color(0.984f, 0.816f, 0.431f); // FBD06E
     [SerializeField] private Color noUserColor = new Color(0.580f, 0.588f, 0.494f); // 94967E
 
-    [Header("Кнопки")]
-    [SerializeField] private Button changeColorButton; // Кнопка для смены цвета
-    [SerializeField] private Button resetColorButton; // Кнопка для сброса цвета
+    [Header("РљРЅРѕРїРєРё")]
+    [SerializeField] private Button changeColorButton; // РљРЅРѕРїРєР° РґР»СЏ СЃРјРµРЅС‹ С†РІРµС‚Р°
+    [SerializeField] private Button resetColorButton; // РљРЅРѕРїРєР° РґР»СЏ СЃР±СЂРѕСЃР° С†РІРµС‚Р°
 
-    [Header("Текст уведомления")]
+    [Header("РўРµРєСЃС‚ СѓРІРµРґРѕРјР»РµРЅРёСЏ")]
     [SerializeField] private TMP_Text notificationText;
     [SerializeField] private float notificationDuration = 1f;
     [SerializeField] private float notificationScale = 2f;
@@ -33,14 +33,14 @@ public class ColorChanger : MonoBehaviour
 
     private void Start()
     {
-        // Проверяем наличие пользователя
+        // РџСЂРѕРІРµСЂСЏРµРј РЅР°Р»РёС‡РёРµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
         CheckUserStatus();
 
-        // Инициализация материала
+        // РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РјР°С‚РµСЂРёР°Р»Р°
         objectMaterial = targetRenderer.material;
         ApplyDefaultColor();
 
-        // Сохраняем оригинальные параметры текста
+        // РЎРѕС…СЂР°РЅСЏРµРј РѕСЂРёРіРёРЅР°Р»СЊРЅС‹Рµ РїР°СЂР°РјРµС‚СЂС‹ С‚РµРєСЃС‚Р°
         if (notificationText != null)
         {
             originalTextPosition = notificationText.rectTransform.localPosition;
@@ -48,13 +48,13 @@ public class ColorChanger : MonoBehaviour
             notificationText.gameObject.SetActive(false);
         }
 
-        // Настройка кнопок
+        // РќР°СЃС‚СЂРѕР№РєР° РєРЅРѕРїРѕРє
         if (changeColorButton != null)
         {
             changeColorButton.onClick.AddListener(() =>
             {
                 ChangeToAlternateColor();
-                ShowNotification("Режим повторения");
+                ShowNotification("Р РµР¶РёРј РїРѕРІС‚РѕСЂРµРЅРёСЏ");
             });
         }
 
@@ -63,16 +63,16 @@ public class ColorChanger : MonoBehaviour
             resetColorButton.onClick.AddListener(() =>
             {
                 ApplyDefaultColor();
-                ShowNotification(hasValidUser ? "Режим изучения" : "Гостевой режим");
+                ShowNotification(hasValidUser ? "Р РµР¶РёРј РёР·СѓС‡РµРЅРёСЏ" : "Р“РѕСЃС‚РµРІРѕР№ СЂРµР¶РёРј");
             });
         }
     }
 
     private void CheckUserStatus()
     {
-        string userCode = PlayerPrefs.GetString("CurrentUserCode", "неизвестен");
+        string userCode = PlayerPrefs.GetString("CurrentUserCode", "РЅРµРёР·РІРµСЃС‚РµРЅ");
         hasValidUser = !string.IsNullOrEmpty(userCode) &&
-                      userCode != "неизвестен" &&
+                      userCode != "РЅРµРёР·РІРµСЃС‚РµРЅ" &&
                       UserJsonFileExists(userCode);
     }
 
@@ -109,16 +109,16 @@ public class ColorChanger : MonoBehaviour
 
     private IEnumerator ShowNotificationCoroutine(string message)
     {
-        // Устанавливаем текст и параметры
+        // РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј С‚РµРєСЃС‚ Рё РїР°СЂР°РјРµС‚СЂС‹
         notificationText.text = message;
         notificationText.gameObject.SetActive(true);
         notificationText.rectTransform.localPosition = notificationPosition;
         notificationText.rectTransform.localScale = originalTextScale * notificationScale;
 
-        // Ждем указанное время
+        // Р–РґРµРј СѓРєР°Р·Р°РЅРЅРѕРµ РІСЂРµРјСЏ
         yield return new WaitForSeconds(notificationDuration);
 
-        // Возвращаем в исходное состояние
+        // Р’РѕР·РІСЂР°С‰Р°РµРј РІ РёСЃС…РѕРґРЅРѕРµ СЃРѕСЃС‚РѕСЏРЅРёРµ
         notificationText.rectTransform.localPosition = originalTextPosition;
         notificationText.rectTransform.localScale = originalTextScale;
         notificationText.gameObject.SetActive(false);
