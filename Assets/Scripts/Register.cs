@@ -32,36 +32,36 @@ public class Register : MonoBehaviour
             _dataManager = FindObjectOfType<JsonDataManager>();
             if (_dataManager == null)
             {
-                ShowError("Системная ошибка!");
+                ShowError("РЎРёСЃС‚РµРјРЅР°СЏ РѕС€РёР±РєР°!");
                 return;
             }
         }
 
         if (string.IsNullOrEmpty(usernameInput.text))
         {
-            ShowError("Введите логин!");
+            ShowError("Р’РІРµРґРёС‚Рµ Р»РѕРіРёРЅ!");
             return;
         }
 
         if (string.IsNullOrEmpty(passwordInput.text))
         {
-            ShowError("Введите пароль!");
+            ShowError("Р’РІРµРґРёС‚Рµ РїР°СЂРѕР»СЊ!");
             return;
         }
 
         try
         {
-            // Хешируем пароль перед сохранением
+            // РҐРµС€РёСЂСѓРµРј РїР°СЂРѕР»СЊ РїРµСЂРµРґ СЃРѕС…СЂР°РЅРµРЅРёРµРј
             byte[] salt = GenerateSalt();
             string passwordHash = HashPasswordPBKDF2(passwordInput.text, salt);
 
-            // Создаем нового пользователя
+            // РЎРѕР·РґР°РµРј РЅРѕРІРѕРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
             UserData newUser = _dataManager.CreateNewUser();
             newUser.username = usernameInput.text;
             newUser.password = passwordHash;
             newUser.salt = Convert.ToBase64String(salt);
 
-            // Инициализируем прогресс
+            // РРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РїСЂРѕРіСЂРµСЃСЃ
             newUser.learningProgress = new Dictionary<string, int>
         {
             {"Animals", 0},
@@ -75,18 +75,18 @@ public class Register : MonoBehaviour
             _dataManager.SaveUserData(newUser);
             PlayerPrefs.SetString("CurrentUserCode", newUser.userCode);
 
-            ShowSuccess($"Регистрация успешна! Код: {newUser.userCode}");
+            ShowSuccess($"Р РµРіРёСЃС‚СЂР°С†РёСЏ СѓСЃРїРµС€РЅР°! РљРѕРґ: {newUser.userCode}");
             StartCoroutine(LoadSceneAfterDelay(1, 1.5f));
         }
         catch (Exception e)
         {
-            ShowError($"Ошибка регистрации: {e.Message}");
+            ShowError($"РћС€РёР±РєР° СЂРµРіРёСЃС‚СЂР°С†РёРё: {e.Message}");
         }
     }
-    // --- Методы для хеширования PBKDF2 ---
+    // --- РњРµС‚РѕРґС‹ РґР»СЏ С…РµС€РёСЂРѕРІР°РЅРёСЏ PBKDF2 ---
     private byte[] GenerateSalt()
     {
-        byte[] salt = new byte[16]; // 128-битная соль
+        byte[] salt = new byte[16]; // 128-Р±РёС‚РЅР°СЏ СЃРѕР»СЊ
         using (var rng = RandomNumberGenerator.Create())
         {
             rng.GetBytes(salt);
@@ -99,10 +99,10 @@ public class Register : MonoBehaviour
         using (var pbkdf2 = new Rfc2898DeriveBytes(
             password: password,
             salt: salt,
-            iterations: 100000, // Рекомендуемое число итераций
+            iterations: 100000, // Р РµРєРѕРјРµРЅРґСѓРµРјРѕРµ С‡РёСЃР»Рѕ РёС‚РµСЂР°С†РёР№
             hashAlgorithm: HashAlgorithmName.SHA256))
         {
-            byte[] hash = pbkdf2.GetBytes(32); // 256-битный хеш
+            byte[] hash = pbkdf2.GetBytes(32); // 256-Р±РёС‚РЅС‹Р№ С…РµС€
             return Convert.ToBase64String(hash);
         }
     }
